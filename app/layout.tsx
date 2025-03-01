@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vamos Sair",
-  description: "Quero sair com você",
+  title: "Apio Para alguém",
+  description: "Muito especial!",
 };
 
 export default function RootLayout({
