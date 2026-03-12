@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Para a Clarissa 🖤",
-  description: "De Jack para a sua Sally",
+  title: "Para a Morcegona",
+  description: "De Jack para a John Morcegona",
 };
 
 export default function RootLayout({
