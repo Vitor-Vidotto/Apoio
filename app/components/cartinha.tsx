@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Joguinho from "./joguinho";
 
 const Cartinha = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showRose, setShowRose] = useState(false);
+  const [playGame, setPlayGame] = useState(false);
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -13,6 +15,19 @@ const Cartinha = () => {
       setShowRose(true);
     }, 2000);
   };
+
+  if (playGame) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        style={{ width: "100%" }}
+      >
+        <Joguinho />
+      </motion.div>
+    );
+  }
 
   return (
     <div style={styles.container}>
@@ -78,6 +93,22 @@ const Cartinha = () => {
                     🌹
                   </motion.div>
                 </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {showRose && (
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2, duration: 1 }}
+                  style={styles.gameButton}
+                  onClick={() => setPlayGame(true)}
+                  whileHover={{ scale: 1.05, backgroundColor: "#8a0303" }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Continuar...
+                </motion.button>
               )}
             </AnimatePresence>
           </motion.div>
@@ -148,6 +179,18 @@ const styles = {
   rose: {
     fontSize: "6em",
     cursor: "default",
+  },
+  gameButton: {
+    marginTop: "40px",
+    padding: "15px 30px",
+    fontSize: "1.2em",
+    fontWeight: "bold",
+    backgroundColor: "#4a0303",
+    color: "white",
+    border: "2px solid #ff3333",
+    borderRadius: "8px",
+    cursor: "pointer",
+    boxShadow: "0 4px 15px rgba(255, 51, 51, 0.2)",
   },
 };
 
