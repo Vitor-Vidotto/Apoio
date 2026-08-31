@@ -41,20 +41,23 @@ const Joguinho = () => {
     let { beta, gamma } = event; // beta is front-to-back, gamma is left-to-right
 
     // If device is flat, beta and gamma are ~0
-    // Limit to reasonable tilt ranges (-90 to 90)
     if (beta === null || gamma === null) return;
     
-    // Smooth out movement and convert tilt to a 0-100% position scale
-    // Typical mobile holding angle is around beta=45. Let's make it relative or just direct mapping.
-    // To make it easy, let's map -45 to 45 degrees to 0-100% on the screen.
+    // Smooth out movement and increase sensitivity
+    // Typical mobile holding angle is around beta=40. Let's make that our center (50% Y).
+    let adjustedBeta = beta - 40;
+
+    // Use a smaller range (e.g. 25 degrees) to make it more sensitive. 
+    // -25 to +25 degrees will cover the whole screen.
+    const maxTilt = 25;
     
     // Clamp values
-    let xTilt = Math.max(-45, Math.min(45, gamma));
-    let yTilt = Math.max(-45, Math.min(45, beta)); // Depending on holding position, this might need an offset, but let's keep it simple.
+    let xTilt = Math.max(-maxTilt, Math.min(maxTilt, gamma));
+    let yTilt = Math.max(-maxTilt, Math.min(maxTilt, adjustedBeta));
 
     // Map to 0-100
-    const newX = ((xTilt + 45) / 90) * 100;
-    const newY = ((yTilt + 45) / 90) * 100;
+    const newX = ((xTilt + maxTilt) / (maxTilt * 2)) * 100;
+    const newY = ((yTilt + maxTilt) / (maxTilt * 2)) * 100;
 
     setPosition({ x: newX, y: newY });
   };
