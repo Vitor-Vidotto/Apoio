@@ -1,30 +1,32 @@
 "use client";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Cartinha from "./cartinha";
 
 const Elogios = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [messageIndex, setMessageIndex] = useState(0);
   const [gifIndex, setGifIndex] = useState(0);
+  const [showCartinha, setShowCartinha] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const messages = [
-    "Você é assustadoramente incrível! 🎃",
-    "Sua energia é mais contagiante que o próprio Halloween!",
-    "Até o Rei da Abóbora acha você demais!",
-    "O mundo precisa de mais pessoas fantásticas como você!",
-    "Você está arrasando mais que o Oogie Boogie! 👻",
-    "Você é uma pessoa única, até na Cidade do Halloween!",
-    "O seu sorriso ilumina até as noites mais escuras!",
-    "Não existe ninguém que dança melhor que você!",
-    "Sua vibe é simplesmente a melhor de todas! 🦇",
-    "Você é ótima em tudo o que faz, até assustando!",
-    "OLHA O FLASH, TEM UMA PESSOA INCRÍVEL NA TELA! 📸",
+    "Sabe, eu sempre achei você assustadoramente incrível. É a pessoa mais fantástica dessa nossa Cidade do Halloween.",
+    "Eu vejo muito o quanto você é gentil. Mesmo nos seus dias mais escuros, essa sua doçura não apaga.",
+    "Eu admiro demais a sua coragem. É muito legal ver você enfrentando os seus pesadelos sempre de cabeça erguida.",
+    "Você me lembra o Jack às vezes. Eu vejo essa chama aí dentro e uma vontade de vencer que simplesmente não some.",
+    "Eu acho incrível que você sabe o seu valor e não aceita pouco da vida. A coroa de tudo isso aqui é sua.",
+    "Para mim, você tem o melhor dos dois mundos. O jeito cuidadoso da Sally, mas a força absurda de um furacão.",
+    "Eu sei que essa situação agora está muito ruim, mas eu te conheço. Eu sei que isso vai passar e você vai espantar essa sombra.",
+    "Qualquer um consegue ver o quão maravilhosa você é. Acho que até o Oogie Boogie amoleceria se te conhecesse direito.",
+    "Eu adoro como você consegue transformar um dia cinzento em algo mágico, só pelo fato de você existir.",
+    "Eu vejo você. Mesmo quando tudo parece dar errado, você levanta e faz a coisa acontecer. Você vai vencer.",
+    "Olha o flash... Só para eu deixar registrado a garota mais especial e forte que eu conheço. Conta comigo.",
   ];
 
   const gifs = [
-    "/gif1.gif",  // GIFs de elogios e positividade
+    "/gif1.gif",
     "/gif2.gif",
     "/gif3.gif",
     "/gif4.gif",
@@ -46,8 +48,12 @@ const Elogios = () => {
   };
 
   const handleGifChange = () => {
-    setGifIndex((prevIndex) => (prevIndex + 1) % gifs.length); // Troca o gif
-    setMessageIndex((prevIndex) => (prevIndex + 1) % messages.length); // Troca a frase
+    if (messageIndex === messages.length - 1) {
+      setShowCartinha(true);
+    } else {
+      setGifIndex((prevIndex) => (prevIndex + 1) % gifs.length);
+      setMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
+    }
   };
 
   return (
@@ -73,6 +79,15 @@ const Elogios = () => {
             Entrar na Cidade do Halloween 🎃
           </motion.button>
         </motion.div>
+      ) : showCartinha ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          style={{ width: "100%" }}
+        >
+          <Cartinha />
+        </motion.div>
       ) : (
         <>
           <motion.div
@@ -80,6 +95,7 @@ const Elogios = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
             style={styles.gifContainer}
+            key={gifIndex}
           >
             <Image
               src={gifs[gifIndex]}
@@ -91,14 +107,18 @@ const Elogios = () => {
             />
           </motion.div>
 
-          <motion.h1
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1 }}
-            style={styles.header}
-          >
-            {messages[messageIndex]}
-          </motion.h1>
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={messageIndex}
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              style={styles.header}
+            >
+              {messages[messageIndex]}
+            </motion.h1>
+          </AnimatePresence>
 
           <motion.div
             initial={{ scale: 0 }}
@@ -112,7 +132,7 @@ const Elogios = () => {
               whileHover={{ scale: 1.05, backgroundColor: "#ff7518" }}
               whileTap={{ scale: 0.95 }}
             >
-              Hmm, prossiga!
+              {messageIndex === messages.length - 1 ? "Tenho uma surpresa..." : "Hmm, prossiga!"}
             </motion.button>
           </motion.div>
 

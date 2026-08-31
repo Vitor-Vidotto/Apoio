@@ -32,6 +32,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${creepster.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
       </body>
