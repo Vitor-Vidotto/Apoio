@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Para a Morcegona",
-  description: "De Jack para a John Morcegona",
+  title: "Para a Ale",
+  description: "Para a Ale",
 };
 
 export default function RootLayout({
